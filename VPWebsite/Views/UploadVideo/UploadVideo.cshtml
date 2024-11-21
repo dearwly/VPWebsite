@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "UploadVideo";
+}
+
+<h2>上传视频</h2>
+
+@using (Html.BeginForm("UploadVideo", "UploadVideo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        <label for="videoFile">选择视频文件:</label>
+        <input type="file" id="videoFile" name="videoFile" />
+    </div>
+    <br />
+    <div>
+        <button type="submit">上传视频</button>
+    </div>
+}
+
+<br />
+
+@if (ViewBag.Message != null)
+{
+    <div>
+        <p>@ViewBag.Message</p>
+    </div>
+}
