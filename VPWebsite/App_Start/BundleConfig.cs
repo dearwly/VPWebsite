@@ -31,6 +31,9 @@ namespace VPWebsite
 
             bundles.Add(new StyleBundle("~/Content/logincss").Include(
                       "~/Content/login.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mainpage").Include(
+                        "~/Scripts/mainpage.js*"));
         }
     }
 }

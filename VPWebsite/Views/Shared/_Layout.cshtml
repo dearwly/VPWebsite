@@ -19,32 +19,45 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     @*<li>@Html.ActionLink("主页", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("关于", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+                        <li>@Html.ActionLink("关于", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
                     <li>@Html.ActionLink("上传", "UploadVideo", "UploadVideo", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     @if (Session["User"] != null)
                     {
                         <li class="nav-item">
-                            @if (Session["IsAdmin"].Equals(0))
-                            {
-                                <span class="nav-link">欢迎, @Session["User"]</span>
-                            }
-                            else if (Session["IsAdmin"].Equals(1))
-                            {
-                                <span class="nav-link">尊敬的管理员 @Session["User"], 你好</span>
-                            }
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("登出", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })
+                            <div class="avatar-container">
+                                <a href="@Url.Action("Login", "Account")" class="nav-link">
+                                    <img src="@Url.Content("~/Content/avatars/default.jpg")" alt="Avatar" class="avatar-img" />
+                                </a>
+                                <div class="hover-menu">
+                                    @if (Session["IsAdmin"].Equals(0))
+                                    {
+                                        <span class="nav-link">欢迎, @Session["User"]</span>
+                                    }
+                                    else if (Session["IsAdmin"].Equals(1))
+                                    {
+                                        <span class="nav-link">尊敬的管理员 @Session["User"], 你好</span>
+                                    }
+                                <div class="menu-item">@Html.ActionLink("登出", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</div>
+                                    <div class="menu-item">上传个人头像</div>
+                                    <div class="menu-item">查看个人视频</div>
+                                    <div class="menu-item">上传视频</div>
+                                </div>
+                            </div>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item"> 
-                            <a href="@Url.Action("Login", "Account")" class="nav-link">
-                                <img src="@Url.Content("~/Content/avatars/default.jpg")" alt="Avatar" class="avatar-img" />
-                            </a>
+                        <li class="nav-item">
+                            <div class="avatar-container">
+                                <a href="@Url.Action("Login", "Account")" class="nav-link">
+                                    <img src="@Url.Content("~/Content/avatars/default.jpg")" alt="Avatar" class="avatar-img" />
+                                </a>
+                                <div class="hover-menu">
+                                    <div class="menu-item">@Html.ActionLink("登录", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</div>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("登录", "Login", "Account", new { area = "" }, new { @class = "nav-link" })
@@ -61,9 +74,11 @@
             <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
         </footer>
     </div>
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/mainpage")
     @RenderSection("scripts", required: false)
 </body>
 </html>
