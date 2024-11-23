@@ -177,6 +177,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Avatar.cs" />
     <Compile Include="Models\MysqlConnection.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserLevel.cs" />
@@ -240,7 +241,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\UploadVideo\UploadVideo.cshtml" />
+    <Content Include="Views\Upload\UploadVideo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Avatar\" />

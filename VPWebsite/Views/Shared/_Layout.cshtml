@@ -7,6 +7,7 @@
     <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
@@ -20,7 +21,7 @@
                 <ul class="navbar-nav flex-grow-1">
                     @*<li>@Html.ActionLink("主页", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("关于", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                    <li>@Html.ActionLink("上传", "UploadVideo", "UploadVideo", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("上传", "UploadVideo", "Upload", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     @if (Session["User"] != null)
@@ -28,7 +29,15 @@
                         <li class="nav-item">
                             <div class="avatar-container">
                                 <a href="@Url.Action("Login", "Account")" class="nav-link">
-                                    <img src="@Url.Content("~/Content/avatars/default.jpg")" alt="Avatar" class="avatar-img" />
+                                    @if (Session["Avatar"] != null)
+                                    {
+                                        <img src="@Url.Content("~/Content/avatars/" + @Session["Avatar"])" alt="Avatar" class="avatar-img" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/Content/avatars/default.jpg")" alt="Avatar" class="avatar-img" />
+                                    }
+
                                 </a>
                                 <div class="hover-menu">
                                     @if (Session["IsAdmin"].Equals(0))
@@ -39,11 +48,17 @@
                                     {
                                         <span class="nav-link">尊敬的管理员 @Session["User"], 你好</span>
                                     }
-                                <div class="menu-item">@Html.ActionLink("登出", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</div>
-                                    <div class="menu-item">上传个人头像</div>
-                                    <div class="menu-item">查看个人视频</div>
-                                    <div class="menu-item">上传视频</div>
-                                </div>
+                                    <div class="menu-item">@Html.ActionLink("登出", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</div>
+                                    @using (Html.BeginForm("UploadAvatar", "Upload", FormMethod.Post, new { enctype = "multipart/form-data", id = "uploadAvatarForm" }))
+                                    {
+                                        <div class="menu-item menu-item-avatar">
+                                            <label for="avatarBtn" id="avatarBtn" >上传头像</label>
+                                            <input type="file" id="avatarFile" name="avatarFile" style="display: none;"/>
+                                        </div>
+                                    }
+                                        <div class="menu-item">查看个人视频</div>
+                                        <div class="menu-item">上传视频</div>
+                                    </div>
                             </div>
                         </li>
                     }
@@ -58,9 +73,6 @@
                                     <div class="menu-item">@Html.ActionLink("登录", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</div>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("登录", "Login", "Account", new { area = "" }, new { @class = "nav-link" })
                         </li>
                     }
                 </ul>

@@ -26,6 +26,8 @@ namespace VPWebsite.Controllers
             {
                 Session["User"] = user.Username;
                 Session["IsAdmin"] = (user.Role == Models.UserRole.Admin) ? 1 : 0;
+                Models.User.loginedUser = user;
+                updateCurrentAvatar();
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Message = "Invalid login credentials.";
@@ -54,6 +56,8 @@ namespace VPWebsite.Controllers
         {
             Session["User"] = null;
             Session["IsAdmin"] = null;
+            Models.User.loginedUser = null;
+            updateCurrentAvatar();
             return RedirectToAction("Index", "Home");
         }
 
@@ -79,7 +83,8 @@ namespace VPWebsite.Controllers
                             Id = reader.GetInt32("Id"),
                             Username = reader.GetString("Username"),
                             Password = reader.GetString("Password"),
-                            Role = (reader.GetInt16("IsAdmin") == 1) ? Models.UserRole.Admin : Models.UserRole.User
+                            Role = (reader.GetInt16("IsAdmin") == 1) ? Models.UserRole.Admin : Models.UserRole.User,
+                            Avatar = new Avatar { AvatarName = !reader.IsDBNull(reader.GetOrdinal("avatars")) ? reader.GetString("avatars") : null, AvatarPath = null}
                         };
                     }
                 }
@@ -102,6 +107,19 @@ namespace VPWebsite.Controllers
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+
+        public void updateCurrentAvatar()
+        {
+            if (Models.User.loginedUser != null)
+            {
+                Session["Avatar"] = Models.User.loginedUser.Avatar.AvatarName;
+            }
+            else
+            {
+                Session["Avatar"] = null;
             }
         }
     }
