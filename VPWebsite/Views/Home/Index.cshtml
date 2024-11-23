@@ -1,38 +1,64 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿@using VPWebsite.Models 
+@model IEnumerable<Video>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>视频列表</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .video-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+        .thumbnail img {
+            width: 100%;
+            height: auto;
+        }
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="videoFile" accept="video/*" />
-            <button type="submit">上传视频</button>
-        </form>
+        .info {
+            padding: 10px;
+        }
 
+            .info h5 {
+                margin: 0 0 10px;
+                font-size: 1.1em;
+            }
+
+            .info .meta {
+                font-size: 0.9em;
+                color: gray;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">视频资源</h1>
+        <div class="row">
+            @foreach (var video in Model)
+            {
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <div class="thumbnail">
+                            <a href="/video/@video.Id" target="_blank">
+                                <img src="@Url.Content(video.GetthumbnailsUrl())" alt="@video.VideoTitle">
+                            </a>
+                        </div>
+                        <div class="info">
+                            <h5>@video.VideoTitle</h5>
+                            <p class="meta">
+                                上传者: @VPWebsite.Models.User.GetUsername(video.User)<br>
+                                时间: @video.DateTime
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-</main>
+</body>
+</html>

@@ -12,7 +12,7 @@ public class UploadController : Controller
     private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
     [HttpPost]
-    public ActionResult UploadVideo(HttpPostedFileBase videoFile)
+    public ActionResult UploadVideo(HttpPostedFileBase videoFile, string videoTitle)
     {
         if (videoFile != null && videoFile.ContentLength > 0)
         {
@@ -22,9 +22,11 @@ public class UploadController : Controller
             DateTime datetime = DateTime.Now;
             Video video = new Video
             {
+                VideoTitle = videoTitle,
                 VideoName = fileName,
                 VideoPath = path,
                 DateTime = datetime,
+                User = (VPWebsite.Models.User.loginedUser != null) ? VPWebsite.Models.User.loginedUser.Id : 0,
             };
             // 保存文件到服务器
             videoFile.SaveAs(path);
@@ -32,7 +34,12 @@ public class UploadController : Controller
             // 将文件信息存储到数据库
             SaveVideoInfoToDatabase(video);
 
+            GenerateThumbnail(video);
+
             ViewBag.Message = "视频上传成功!";
+            ViewBag.thumbnailsTitle = video.VideoTitle;
+            ViewBag.thumbnailsName = Path.GetFileNameWithoutExtension(video.VideoName) + ".jpg";
+
         }
         else
         {
@@ -76,11 +83,14 @@ public class UploadController : Controller
     {
         using (var connection = new MySqlConnection(connectionString))
         {
-            string query = "INSERT INTO Videos (VideoName, VideoPath, UploadTime) VALUES (@VideoName, @VideoPath, @UploadTime)";
+            string query = "INSERT INTO Videos (Title, VideoName, VideoPath, UploadTime, User) VALUES (@Title, @VideoName, @VideoPath, @UploadTime, @User)";
             MySqlCommand cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@Title", video.VideoTitle);
             cmd.Parameters.AddWithValue("@VideoName", video.VideoName);
             cmd.Parameters.AddWithValue("@VideoPath", video.VideoPath);
             cmd.Parameters.AddWithValue("@UploadTime", video.DateTime);
+            cmd.Parameters.AddWithValue("@User", video.User);
+
 
             connection.Open();
             cmd.ExecuteNonQuery();
@@ -103,6 +113,28 @@ public class UploadController : Controller
             connection.Close();
         }
     }
+
+    public void GenerateThumbnail(Video video)
+    {
+        string thumbnailPath = Path.Combine(Server.MapPath("~/Content/thumbnails"), Path.GetFileNameWithoutExtension(video.VideoPath) + ".jpg");
+        string ffmpegPath = Server.MapPath("~/ffmpeg/bin/ffmpeg.exe"); // FFmpeg 路径
+
+        // FFmpeg 命令
+        string args = $"-i \"{video.VideoPath}\" -ss 00:00:02 -vframes 1 -s 854x480 \"{thumbnailPath}\" -y";
+
+
+        // 调用 FFmpeg
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = ffmpegPath,
+            Arguments = args,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        }).WaitForExit();
+    }
+
 
     public string GetHighestFileVersion(string id, string directoryPath, string extension)
     {
