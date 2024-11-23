@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MySql.Data.MySqlClient;
+using PagedList;
 using VPWebsite.Models;
 
 namespace VPWebsite.Controllers
@@ -13,11 +14,53 @@ namespace VPWebsite.Controllers
     public class HomeController : Controller
     {
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-        public ActionResult Index()
+        public ActionResult Index(int? page, string search, string sort)
         {
-            var videos = GetAllVideos();
-            return View(videos);
+            // 当前页数，默认为 1
+            int pageNumber = page ?? 1;
+
+            // 每页显示的视频数量
+            int pageSize = 9;
+
+            // 获取所有视频
+            var videos = VPWebsite.Models.Video.GetAllVideos().AsQueryable();
+
+            // 搜索功能
+            if (!string.IsNullOrEmpty(search))
+            {
+                videos = videos.Where(v => v.VideoTitle.Contains(search));
+            }
+
+            // 排序功能
+            switch (sort)
+            {
+                case "date_asc":
+                    videos = videos.OrderBy(v => v.DateTime);
+                    break;
+                case "date_desc":
+                    videos = videos.OrderByDescending(v => v.DateTime);
+                    break;
+                case "title_asc":
+                    videos = videos.OrderBy(v => v.VideoTitle);
+                    break;
+                case "title_desc":
+                    videos = videos.OrderByDescending(v => v.VideoTitle);
+                    break;
+                default:
+                    videos = videos.OrderByDescending(v => v.DateTime);
+                    break;
+            }
+
+            // 分页
+            var pagedList = videos.ToPagedList(pageNumber, pageSize);
+
+            // 传递搜索和排序参数到前端
+            ViewBag.SearchQuery = search;
+            ViewBag.SortOrder = sort;
+
+            return View(pagedList);
         }
+
 
         public ActionResult About()
         {
@@ -33,35 +76,6 @@ namespace VPWebsite.Controllers
             return View();
         }
 
-        public List<Video> GetAllVideos()
-        {
-            List<Video> videos = new List<Video>();
-            string query = "SELECT VideoId, Title, VideoName, VideoPath, UploadTime, User FROM Videos";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-
-                conn.Open();
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Video video = new Video
-                        {
-                            Id = Convert.ToInt32(reader["VideoId"]),
-                            VideoTitle = reader["Title"].ToString(),
-                            VideoName = reader["VideoName"].ToString(),
-                            VideoPath = reader["VideoPath"].ToString(),
-                            DateTime = Convert.ToDateTime(reader["UploadTime"]),
-                            User = Convert.ToInt32(reader["User"])
-                        };
-
-                        videos.Add(video);
-                    }
-                }
-            }
-            return videos;
-        }
+        
     }
 }

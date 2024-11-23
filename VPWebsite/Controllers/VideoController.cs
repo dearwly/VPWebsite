@@ -1,6 +1,10 @@
 ﻿using System.Web.Mvc;
 using System;
 using VPWebsite.Models;
+using PagedList;
+using MySql.Data.MySqlClient;
+using System.Collections.Generic;
+using System.Linq;
 
 public class VideoController : Controller
 {
@@ -72,4 +76,8 @@ public class VideoController : Controller
         // 例如，删除数据库中的视频记录
         return true;
     }
+
+
+
+    
 }

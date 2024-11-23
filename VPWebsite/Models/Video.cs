@@ -52,5 +52,35 @@ namespace VPWebsite.Models
             }
             return video;
         }
+        public static List<Video> GetAllVideos()
+        {
+            List<Video> videos = new List<Video>();
+            string query = "SELECT VideoId, Title, VideoName, VideoPath, UploadTime, User FROM Videos";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                conn.Open();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Video video = new Video
+                        {
+                            Id = Convert.ToInt32(reader["VideoId"]),
+                            VideoTitle = reader["Title"].ToString(),
+                            VideoName = reader["VideoName"].ToString(),
+                            VideoPath = reader["VideoPath"].ToString(),
+                            DateTime = Convert.ToDateTime(reader["UploadTime"]),
+                            User = Convert.ToInt32(reader["User"])
+                        };
+
+                        videos.Add(video);
+                    }
+                }
+            }
+            return videos;
+        }
     }
 }

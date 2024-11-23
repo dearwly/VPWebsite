@@ -1,5 +1,7 @@
-﻿@using VPWebsite.Models 
-@model IEnumerable<Video>
+﻿@using VPWebsite.Models
+@using PagedList
+@model IPagedList<Video>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,6 +61,23 @@
                 </div>
             }
         </div>
+        <!-- 分页控件 -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" href="?page=@(Model.PageNumber - 1)&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">上一页</a>
+                </li>
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" href="?page=@i&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" href="?page=@(Model.PageNumber + 1)&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">下一页</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </body>
 </html>
