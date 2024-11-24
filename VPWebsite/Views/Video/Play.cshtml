@@ -18,10 +18,17 @@
     <p><strong>发布时间:</strong> @Model.FormattedUploadTime</p>
 </div>
 
+
+@if (VPWebsite.Models.User.loginedUser != null)
+{
+    if (VPWebsite.Models.User.loginedUser.Id == Model.Video.User || VPWebsite.Models.User.loginedUser.Role == UserRole.Admin)
+    {
 <!-- 删除视频的按钮 -->
 <form action="@Url.Action("DeleteVideo", new { videoId = Model.Video.Id })" method="post" onsubmit="return confirm('您确定要删除这个视频吗？');" style="text-align: center; margin-top: 20px;">
     <button type="submit" class="btn btn-danger">删除视频</button>
 </form>
+    }
+}
 
 @if (ViewBag.Message != null)
 {

@@ -82,5 +82,32 @@ namespace VPWebsite.Models
             }
             return videos;
         }
+
+        public static bool DeleteVideoById(int videoId)
+        {
+            string query = "DELETE FROM Videos WHERE VideoId = @VideoId";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@VideoId", videoId);
+
+                try
+                {
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    // 如果受影响的行数大于0，表示删除成功
+                    return rowsAffected > 0;
+                }
+                catch (Exception ex)
+                {
+                    // 记录异常或处理错误
+                    Console.WriteLine($"Error deleting video: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
     }
 }

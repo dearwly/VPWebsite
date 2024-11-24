@@ -14,7 +14,7 @@ namespace VPWebsite
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 name: "Video",
-                url: "video/{VideoId}",
+                url: "video/play/{VideoId}",
                 defaults: new { controller = "Video", action = "Play", VideoId = UrlParameter.Optional }
                 );
             routes.MapRoute(

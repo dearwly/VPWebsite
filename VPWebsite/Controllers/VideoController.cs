@@ -44,14 +44,14 @@ public class VideoController : Controller
 
 
 
-    // 删除视频的方法
+
     [HttpPost]
     public ActionResult DeleteVideo(int videoId)
     {
         try
         {
             // 删除视频
-            var success = DeleteVideoById(videoId);
+            var success = Video.DeleteVideoById(videoId);
             if (success)
             {
                 ViewBag.Message = "视频删除成功！";
@@ -67,14 +67,6 @@ public class VideoController : Controller
             ViewBag.Message = "删除视频时出错：" + ex.Message;
             return RedirectToAction("Index", "Home");
         }
-    }
-
-    // 删除视频的数据库操作
-    private bool DeleteVideoById(int videoId)
-    {
-        // 这里执行删除操作
-        // 例如，删除数据库中的视频记录
-        return true;
     }
 
 

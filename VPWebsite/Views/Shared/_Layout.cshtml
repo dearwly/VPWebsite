@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    <title>@ViewBag.Title - My Asp.Net Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -73,8 +73,7 @@
                                             <input type="file" id="avatarFile" name="avatarFile" style="display: none;" />
                                         </div>
                                     }
-                                    <div class="menu-item">查看个人视频</div>
-                                    <div class="menu-item">上传视频</div>
+                                <div class="menu-item">@Html.ActionLink("上传视频", "UploadVideo", "Upload", new { area = "" }, new { @class = "nav-link" })</div>
                                 </div>
                             </div>
                         </li>
