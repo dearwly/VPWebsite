@@ -2,7 +2,7 @@
     const $avatar = $('.avatar-img');
     const $hoverMenu = $('.hover-menu');
 
-    // 鼠标悬浮显示悬浮菜单
+    // hover menu
     $avatar.hover(
         function () { // mouseenter
             $hoverMenu.addClass('active');
@@ -16,17 +16,17 @@
         }
     );
 
-    // 鼠标从菜单移开隐藏菜单
+    // cursor 
     $hoverMenu.on('mouseleave', function () {
         $hoverMenu.removeClass('active');
     });
 
-    // 点击“上传头像”按钮触发文件选择框
+    // click upload to choose file
     $("#avatarBtn").on("click", function () {
-        $("#avatarFile").click(); // 触发隐藏的文件选择框
+        $("#avatarFile").click(); 
     });
 
-    // 文件选择后自动上传
+    // auto upload
     $("#avatarFile").on("change", function () {
         var formData = new FormData($("#uploadAvatarForm")[0]);
 
@@ -38,14 +38,14 @@
             processData: false,
             success: function (response) {
                 if (response.success) {
-                    alert(response.message); // 显示成功提示
-                    location.reload(); // 刷新页面
+                    alert(response.message); 
+                    location.reload();
                 } else {
-                    alert(response.message); // 显示错误提示
+                    alert(response.message); 
                 }
             },
             error: function () {
-                alert("上传失败，请稍后再试！");
+                alert("Upload failed, please try again later!");
             }
         });
     });

@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>视频列表</title>
+    <title>Video List:</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         .video-card {
@@ -39,7 +39,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4">视频资源</h1>
+        <h1 class="my-4">Videos: </h1>
         <div class="row">
             @foreach (var video in Model)
             {
@@ -53,19 +53,18 @@
                         <div class="info">
                             <h5>@video.VideoTitle</h5>
                             <p class="meta">
-                                上传者: @VPWebsite.Models.User.GetUsername(video.User)<br>
-                                时间: @video.DateTime
+                                Uploader: @VPWebsite.Models.User.GetUsername(video.User)<br>
+                                Datetime: @video.DateTime
                             </p>
                         </div>
                     </div>
                 </div>
             }
         </div>
-        <!-- 分页控件 -->
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                    <a class="page-link" href="?page=@(Model.PageNumber - 1)&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">上一页</a>
+                    <a class="page-link" href="?page=@(Model.PageNumber - 1)&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">Previous Page</a>
                 </li>
                 @for (int i = 1; i <= Model.PageCount; i++)
                 {
@@ -74,7 +73,7 @@
                     </li>
                 }
                 <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                    <a class="page-link" href="?page=@(Model.PageNumber + 1)&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">下一页</a>
+                    <a class="page-link" href="?page=@(Model.PageNumber + 1)&search=@ViewBag.SearchQuery&sort=@ViewBag.SortOrder">Next Page</a>
                 </li>
             </ul>
         </nav>

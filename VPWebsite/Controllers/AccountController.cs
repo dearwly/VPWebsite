@@ -61,7 +61,7 @@ namespace VPWebsite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // 方法：通过用户名和密码从数据库中获取用户
+        // get user from database by username and password
         private User GetUserByCredentials(string username, string password)
         {
             User user = null;
@@ -93,7 +93,7 @@ namespace VPWebsite.Controllers
             return user;
         }
 
-        // 方法：添加新用户到数据库
+        // add a new user to database
         private void AddUser(User user)
         {
             string query = "INSERT INTO Users (Username, Password, IsAdmin) VALUES (@Username, @Password, @IsAdmin)";

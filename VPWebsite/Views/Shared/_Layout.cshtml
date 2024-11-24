@@ -12,30 +12,30 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
         <div class="container">
-            @Html.ActionLink("应用程序名称", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="切换导航" aria-controls="navbarSupportedContent"
+            @Html.ActionLink("PiliPili", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("上传", "UploadVideo", "Upload", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Upload", "UploadVideo", "Upload", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 <ul class="navbar-nav flex-grow-1">
                     <div class="d-flex justify-content-between mb-4">
-                        <!-- 搜索框 -->
+                        <!-- Search box-->
                         <form method="get" action="@Url.Action("Index", "Home")" class="search-form">
-                            <input type="text" name="search" value="@ViewBag.SearchQuery" placeholder="搜索视频" class="search-input" />
-                            <button type="submit" class="btn btn-primary search-btn">搜索</button>
+                            <input type="text" name="search" value="@ViewBag.SearchQuery" placeholder="Search..." class="search-input" />
+                            <button type="submit" class="btn btn-primary search-btn">Search</button>
                         </form>
 
-                        <!-- 排序菜单 -->
+                        <!-- sort menu -->
                         <form method="get" action="@Url.Action("Index", "Home")" class="sort-form">
                             <select name="sort" class="form-select sort-select" onchange="this.form.submit()">
-                                <option value="date_desc" @(ViewBag.SortOrder == "date_desc" ? "selected" : "")>按时间（最新）</option>
-                                <option value="date_asc" @(ViewBag.SortOrder == "date_asc" ? "selected" : "")>按时间（最早）</option>
-                                <option value="title_asc" @(ViewBag.SortOrder == "title_asc" ? "selected" : "")>按标题（A-Z）</option>
-                                <option value="title_desc" @(ViewBag.SortOrder == "title_desc" ? "selected" : "")>按标题（Z-A）</option>
+                                <option value="date_desc" @(ViewBag.SortOrder == "date_desc" ? "selected" : "")>By time (latest)</option>
+                                <option value="date_asc" @(ViewBag.SortOrder == "date_asc" ? "selected" : "")>By time (earliest)</option>
+                                <option value="title_asc" @(ViewBag.SortOrder == "title_asc" ? "selected" : "")>By title (A-Z)</option>
+                                <option value="title_desc" @(ViewBag.SortOrder == "title_desc" ? "selected" : "")>By title (Z-A)</option>
                             </select>
                         </form>
                     </div>
@@ -59,21 +59,21 @@
                                 <div class="hover-menu">
                                     @if (Session["IsAdmin"].Equals(0))
                                     {
-                                        <span class="nav-link">欢迎, @Session["User"]</span>
+                                        <span class="nav-link">Welcome, @Session["User"]</span>
                                     }
                                     else if (Session["IsAdmin"].Equals(1))
                                     {
-                                        <span class="nav-link">尊敬的管理员 @Session["User"], 你好</span>
+                                <span class="nav-link">Welcome, Administer: @Session["User"]</span>
                                     }
-                                    <div class="menu-item">@Html.ActionLink("登出", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</div>
+                                    <div class="menu-item">@Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "nav-link" })</div>
                                     @using (Html.BeginForm("UploadAvatar", "Upload", FormMethod.Post, new { enctype = "multipart/form-data", id = "uploadAvatarForm" }))
                                     {
                                         <div class="menu-item menu-item-avatar">
-                                            <label for="avatarBtn" id="avatarBtn">上传头像</label>
+                                            <label for="avatarBtn" id="avatarBtn">Upload Avatar</label>
                                             <input type="file" id="avatarFile" name="avatarFile" style="display: none;" />
                                         </div>
                                     }
-                                <div class="menu-item">@Html.ActionLink("上传视频", "UploadVideo", "Upload", new { area = "" }, new { @class = "nav-link" })</div>
+                                <div class="menu-item">@Html.ActionLink("Upload Videos", "UploadVideo", "Upload", new { area = "" }, new { @class = "nav-link" })</div>
                                 </div>
                             </div>
                         </li>
@@ -86,7 +86,7 @@
                                     <img src="@Url.Content("~/Content/avatars/default.jpg")" alt="Avatar" class="avatar-img" />
                                 </a>
                                 <div class="hover-menu">
-                                    <div class="menu-item">@Html.ActionLink("登录", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</div>
+                                    <div class="menu-item">@Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</div>
                                 </div>
                             </div>
                         </li>
@@ -98,7 +98,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
+            <p>&copy; @DateTime.Now.Year - My Asp.Net Application</p>
         </footer>
     </div>
     </div>

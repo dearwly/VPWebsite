@@ -72,7 +72,7 @@ textarea {
     color: #333;
     cursor: pointer;
     transition: background-color 0.2s;
-    white-space: nowrap; /* 禁止换行 */
+    white-space: nowrap; 
 }
 
     .menu-item:hover {

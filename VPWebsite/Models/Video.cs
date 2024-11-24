@@ -97,12 +97,12 @@ namespace VPWebsite.Models
                     conn.Open();
                     int rowsAffected = cmd.ExecuteNonQuery();
 
-                    // 如果受影响的行数大于0，表示删除成功
+                    // if influened lines > 0, succecc
                     return rowsAffected > 0;
                 }
                 catch (Exception ex)
                 {
-                    // 记录异常或处理错误
+                    // exception
                     Console.WriteLine($"Error deleting video: {ex.Message}");
                     return false;
                 }

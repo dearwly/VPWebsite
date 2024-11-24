@@ -1,7 +1,7 @@
 ﻿@model VPWebsite.Models.User
 
 @{
-    ViewBag.Title = "注册与登录";
+    ViewBag.Title = "Register and Login";
 }
 
 @Scripts.Render("~/bundles/loginjs")
@@ -19,33 +19,33 @@
     <div class="login_register">
         <div class="control">
             <div class="item">
-                <div class="active">登录</div><div>注册</div>
+                <div class="active">Login</div><div>Register</div>
             </div>
             <div class="content">
-                <!-- 登录表单 -->
+                <!-- login form -->
                 <div style="display: block;">
-                    <h2>登录</h2>
+                    <h2>Login</h2>
                     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
                     {
-                        <p>账号</p>
+                        <p>Username</p>
                         @Html.TextBoxFor(m => m.Username, new { placeholder = "username", required = "required" })
-                        <p>密码</p>
+                        <p>Password</p>
                         @Html.PasswordFor(m => m.Password, new { placeholder = "password", required = "required" })
                         <br />
-                        <button type="submit" class="LARbutton">登录</button>
+                        <button type="submit" class="LARbutton">Login</button>
                     }
                 </div>
-                <!-- 注册表单 -->
+                <!-- register form -->
                 <div>
-                    <h2>注册</h2>
+                    <h2>register</h2>
                     @using (Html.BeginForm("Register", "Account", FormMethod.Post))
                     {
-                        <p>用户名</p>
+                        <p>Username</p>
                         @Html.TextBoxFor(m => m.Username, new { placeholder = "username", required = "required" })
-                        <p>密码</p>
+                        <p>Password</p>
                         @Html.PasswordFor(m => m.Password, new { placeholder = "password", required = "required" })
                         <br />
-                        <button type="submit" class="LARbutton">注册</button>
+                        <button type="submit" class="LARbutton">Register</button>
                     }
                 </div>
             </div>

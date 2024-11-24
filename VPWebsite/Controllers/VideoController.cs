@@ -8,12 +8,12 @@ using System.Linq;
 
 public class VideoController : Controller
 {
-    // 用于显示视频信息和播放视频
+    // To show video info and play video
     public ActionResult Play(int videoId)
     {
         try
         {
-            // 从数据库获取视频信息
+            // get content from mysql
             var video = Video.GetVideoById(videoId);
 
             if (video == null)
@@ -21,10 +21,10 @@ public class VideoController : Controller
                 return HttpNotFound();
             }
 
-            // 获取视频发布者信息
+            // get publisher
             var username = VPWebsite.Models.User.GetUsername(video.User);
 
-            // 将视频和用户信息传递到视图
+            // push video and user to view
             var viewModel = new VideoView
             {
                 Video = video,
@@ -36,8 +36,8 @@ public class VideoController : Controller
         }
         catch (Exception ex)
         {
-            // 处理任何异常
-            ViewBag.Message = "获取视频信息时出错：" + ex.Message;
+            // catch exception
+            ViewBag.Message = "Error getting video:" + ex.Message;
             return View();
         }
     }
@@ -50,21 +50,21 @@ public class VideoController : Controller
     {
         try
         {
-            // 删除视频
+            // delete Video
             var success = Video.DeleteVideoById(videoId);
             if (success)
             {
-                ViewBag.Message = "视频删除成功！";
+                ViewBag.Message = "Video deleted successfully";
             }
             else
             {
-                ViewBag.Message = "删除视频失败！";
+                ViewBag.Message = "Fail to delete video";
             }
             return RedirectToAction("Index", "Home");
         }
         catch (Exception ex)
         {
-            ViewBag.Message = "删除视频时出错：" + ex.Message;
+            ViewBag.Message = "Error deleting video:" + ex.Message;
             return RedirectToAction("Index", "Home");
         }
     }

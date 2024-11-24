@@ -16,7 +16,7 @@ public class UploadController : Controller
     {
         if (videoFile != null && videoFile.ContentLength > 0)
         {
-            // 设置保存文件的路径
+            // set saving path
             string fileName = Path.GetFileName(videoFile.FileName);
             string path = Path.Combine(Server.MapPath("~/Content/videos"), fileName);
             DateTime datetime = DateTime.Now;
@@ -28,22 +28,22 @@ public class UploadController : Controller
                 DateTime = datetime,
                 User = (VPWebsite.Models.User.loginedUser != null) ? VPWebsite.Models.User.loginedUser.Id : 0,
             };
-            // 保存文件到服务器
+            // save file to server
             videoFile.SaveAs(path);
 
-            // 将文件信息存储到数据库
+            // save info to database
             SaveVideoInfoToDatabase(video);
 
             GenerateThumbnail(video);
 
-            ViewBag.Message = "视频上传成功!";
+            ViewBag.Message = "Upload video successful!";
             ViewBag.thumbnailsTitle = video.VideoTitle;
             ViewBag.thumbnailsName = Path.GetFileNameWithoutExtension(video.VideoName) + ".jpg";
 
         }
         else
         {
-            ViewBag.Message = "请选择一个视频文件上传!";
+            ViewBag.Message = "Please select a valid file!";
         }
 
         return View();
@@ -54,7 +54,7 @@ public class UploadController : Controller
     {
         if (avatarFile != null && avatarFile.ContentLength > 0)
         {
-            // 设置保存文件的路径
+            // set saving path
             string temfileName = Path.GetFileName(avatarFile.FileName);
             string id = VPWebsite.Models.User.loginedUser.Id.ToString();
             string fileName = GetHighestFileVersion(id, Server.MapPath("~/Content/avatars"), Path.GetExtension(avatarFile.FileName)) + Path.GetExtension(avatarFile.FileName);
@@ -64,17 +64,17 @@ public class UploadController : Controller
                 AvatarName = fileName,
                 AvatarPath = path,
             };
-            // 保存文件到服务器
+            // save avatar to server
             avatarFile.SaveAs(path);
 
-            // 将文件信息存储到数据库
+            // save data to databese
             SaveAvatarInfoToDatabase(avatar);
 
-            return Json(new { success = true, message = "上传成功！" });
+            return Json(new { success = true, message = "Upload successful!" });
         }
         else
         {
-            return Json(new { success = false, message = "请选择一个有效的文件！" });
+            return Json(new { success = false, message = "Please select a valid file!" });
         }
 
     }
@@ -117,13 +117,13 @@ public class UploadController : Controller
     public void GenerateThumbnail(Video video)
     {
         string thumbnailPath = Path.Combine(Server.MapPath("~/Content/thumbnails"), Path.GetFileNameWithoutExtension(video.VideoPath) + ".jpg");
-        string ffmpegPath = Server.MapPath("~/ffmpeg/bin/ffmpeg.exe"); // FFmpeg 路径
+        string ffmpegPath = Server.MapPath("~/ffmpeg/bin/ffmpeg.exe"); // FFmpeg path
 
-        // FFmpeg 命令
+        // FFmpeg command
         string args = $"-i \"{video.VideoPath}\" -ss 00:00:02 -vframes 1 -s 854x480 \"{thumbnailPath}\" -y";
 
 
-        // 调用 FFmpeg
+        // call FFmpeg
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
         {
             FileName = ffmpegPath,
@@ -143,20 +143,19 @@ public class UploadController : Controller
 
         while (true)
         {
-            // 生成文件名
+            // generate file name
             string fileName = ((index == 0) ? $"{id}" : $"{id}_{index}") + extension;
             filePath = Path.Combine(directoryPath, fileName);
 
-            // 检查文件是否存在
+            // check exist
             if (!System.IO.File.Exists(filePath))
             {
-                break; // 如果文件不存在，则退出循环
+                break;
             }
 
-            index++; // 检查下一个编号的文件
+            index++;
         }
 
-        // 返回最后一个存在的文件路径（如果没有找到则返回 null）
         return (index == 0) ? id : $"{id}_{index}";
     }
 

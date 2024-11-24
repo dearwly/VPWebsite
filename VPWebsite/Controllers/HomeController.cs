@@ -16,22 +16,22 @@ namespace VPWebsite.Controllers
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         public ActionResult Index(int? page, string search, string sort)
         {
-            // 当前页数，默认为 1
+            // Page now, default: 1
             int pageNumber = page ?? 1;
 
-            // 每页显示的视频数量
+            // Video Number every page
             int pageSize = 9;
 
-            // 获取所有视频
+            // get all videos
             var videos = VPWebsite.Models.Video.GetAllVideos().AsQueryable();
 
-            // 搜索功能
+            // search function
             if (!string.IsNullOrEmpty(search))
             {
                 videos = videos.Where(v => v.VideoTitle.Contains(search));
             }
 
-            // 排序功能
+            // sort function
             switch (sort)
             {
                 case "date_asc":
@@ -51,10 +51,10 @@ namespace VPWebsite.Controllers
                     break;
             }
 
-            // 分页
+            // Pagination
             var pagedList = videos.ToPagedList(pageNumber, pageSize);
 
-            // 传递搜索和排序参数到前端
+            // Passing search and sort parameters to the front end
             ViewBag.SearchQuery = search;
             ViewBag.SortOrder = sort;
 
